@@ -12,23 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.diegopereira.hrworker.domain.Worker;
 import dev.diegopereira.hrworker.repository.WorkerRepository;
+import dev.diegopereira.hrworker.service.WorkerService;
 
 @RestController
 @RequestMapping(value = "/workers")
 public class WorkerController {
 
 	@Autowired
-	private WorkerRepository workerRepository;
+	private WorkerService workerService;
 
 	@GetMapping
 	public ResponseEntity<List<Worker>> findAll() {
-		List<Worker> workerList = workerRepository.findAll();
+		List<Worker> workerList = workerService.findAll();
 		return ResponseEntity.ok(workerList);
 	}
-	
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Worker> findById(@PathVariable Long id) {
-		Worker worker = workerRepository.findById(id).get();
+		Worker worker = workerService.findByIdOrThrowBadRequestException(id);
 		return ResponseEntity.ok(worker);
 	}
 }
